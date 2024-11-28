@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export default function Navbar() {
   return (
-    <div className="flex justify-center items-center p-4 bg-zinc-800">
+    <div className="flex justify-center items-center p-4 bg-zinc-800 border-b-4 border-zinc-700">
       <Link href='/'>
         <div className="flex items-center gap-3">
           <Image width={70} height={44} src="/icon.svg" alt="toploggerplus logo" />
