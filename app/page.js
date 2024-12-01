@@ -1,9 +1,18 @@
-import Overview from "@/components/Overview";
+import GymCard from "@/components/GymCard";
+import Info from "@/components/Info";
+import Tools from "@/components/Tools";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <div>
-      <Overview />
+      <Info/>
+      <GymCard/>
+      <Tools />
+      <div className="text-center text-zinc-600 flex justify-center items-center gap-3">
+        <div>By Ties Petersen</div>
+        <Link href='https://github.com/TiesPetersen'><i className="fa-brands fa-square-github text-2xl p-0 m-0"></i></Link>
+      </div>
     </div>
   );
 }

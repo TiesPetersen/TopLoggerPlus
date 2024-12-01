@@ -2,9 +2,9 @@ import Link from 'next/link'
 import React from 'react'
 
 export default function Button(props) {
-    const { text, href } = props;
+    const { text, href, disabled, onClick } = props;
 
     return (
-        <Link href={href}><div className='bg-blue-600 p-2 rounded-lg hover:bg-blue-500'>{ text }</div></Link>
+        <Link onClick={onClick} href={disabled ? '' : href}><div className={(disabled ? 'bg-zinc-400 text-zinc-700 ' : 'bg-zinc-100 hover:bg-zinc-300 ') + ' text-zinc-900 p-2 rounded-lg'}>{ text }</div></Link>
     )
 }
