@@ -23,6 +23,8 @@ export function LocalProvider({children}) {
         // store gym in local storage
         if (gym != null) {
             localStorage.setItem('gym', gym)
+        } else {
+            localStorage.removeItem('gym')
         }
     }, [gym])
 

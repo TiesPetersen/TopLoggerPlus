@@ -49,38 +49,41 @@ export default function GymCard() {
     return (
         <Card>
             <div className='text-center mb-3 text-lg font-bold'>
-                Select your gym
+                1. Select Your Gym
             </div>
             {!loading ? 
             <div>
                 {gym ? 
-                <div className='mb-3'>
-                    Current gym: <b>{gymList.find((gymObj) => gymObj.id == gym)?.name}</b>
-                </div> : ''}
+                <div className=''>
+                    <div className='mb-3'>Selected gym: <b>{gymList.find((gymObj) => gymObj.id == gym)?.name}</b></div>
+                    <Button href='/' text='Change' onClick={() => {setGym(null)}}/>
+                </div> : 
                 <div>
-                    <input type='text' className='w-full rounded p-1 text-zinc-900' placeholder='Type here...' value={text} onChange={(e)=>setText(e.target.value)}/>
-                </div>
-                <div className='mt-4'>
-                    {filteredGymList.length > 0 ? 
-                    <div className='flex flex-col gap-3'>
-                        {filteredGymList.map((gym) => 
-                        (<div className='p-4 bg-zinc-800 rounded-lg border border-zinc-700 border-4' key={gym.id}>
-                                <div className='flex justify-between'>
-                                    <div>
-                                        {gym.name}
-                                    </div>
-                                    <div>
-                                        <Button text='Select' href='/' onClick={() => selectGym(gym.id)}/>
-                                    </div>
-                                </div>
-                        </div>)
-                        )}
-                    </div> :
-                    <div className='text-zinc-300'>
-                        Start typing to see gyms...
+                    <div>
+                        <input type='text' className='w-full bg-zinc-700 rounded p-1 placeholder:text-zinc-300' placeholder='Type here...' value={text} onChange={(e)=>setText(e.target.value)}/>
                     </div>
-                    }   
-                </div>
+                    <div className='mt-4'>
+                        {filteredGymList.length > 0 ? 
+                        <div className='flex flex-col gap-3'>
+                            {filteredGymList.map((gym) => 
+                            (<div className='p-4 bg-zinc-800 rounded-lg border border-zinc-700 border-4' key={gym.id}>
+                                    <div className='flex justify-between items-center'>
+                                        <div>
+                                            {gym.name}
+                                        </div>
+                                        <div>
+                                            <Button text='Select' href='/' onClick={() => selectGym(gym.id)}/>
+                                        </div>
+                                    </div>
+                            </div>)
+                            )}
+                        </div> :
+                        <div className='text-zinc-300'>
+                            Start typing to see gyms...
+                        </div>
+                        }   
+                    </div>
+                </div> }
             </div> :
             <div className='text-center text-zinc-300'>
                 Loading...
