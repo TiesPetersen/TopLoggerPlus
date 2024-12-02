@@ -48,8 +48,8 @@ export default function GymCard() {
 
     return (
         <Card>
-            <div className='text-center mb-3 text-lg font-bold'>
-                1. Select Your Gym
+            <div className='text-center mb-3 text-xl font-bold'>
+                Select Your Gym
             </div>
             {!loading ? 
             <div>
@@ -79,7 +79,7 @@ export default function GymCard() {
                 </div> 
             </div> :
             <div className='text-center text-zinc-300'>
-                Loading...
+                Retrieving gyms from TopLogger...
             </div>
         }
         </Card>

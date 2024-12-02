@@ -1,4 +1,4 @@
-import { getAllGyms } from '@/toplogger'
+import { getAllGyms, getBoulders } from '@/toplogger'
 
 
 export default async function handler(req, res) {
@@ -6,12 +6,12 @@ export default async function handler(req, res) {
         var result;
 
         // decode request
-        const { func } = req.body
+        const { func, gymId } = req.body
 
         if (func == 'allGyms') {
             result = await getAllGyms()
         } else if (func == 'boulders') {
-            result = {test: 'hi'}
+            result = await getBoulders(gymId)
         } else {
             throw new Error("Unknown function");
         }

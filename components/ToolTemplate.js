@@ -7,10 +7,11 @@ import { useLocal } from '@/context/localContext'
 import { redirect } from 'next/navigation'
 import Button from './Button'
 
-export default function RandomBoulderGenerator() {
+export default function ToolTemplate({children, title}) {
     const [loadingGyms, setLoadingGyms] = useState(true)
     const [loadingBoulders, setLoadingBoulders] = useState(true)
     const [gymList, setGymList] = useState([])
+    const [boulderList, setBoulderList] = useState([])
 
     const { gym, setGym} = useLocal()
 
@@ -33,10 +34,12 @@ export default function RandomBoulderGenerator() {
             const response = await fetch('/api/toploggerhandler', {
                 method: 'POST', 
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({func: 'boulders'})})
+                body: JSON.stringify({func: 'boulders', gymId: gym})})
             
             if (response.ok) {
                 const boulders = await response.json()
+                console.log(boulders)
+                setBoulderList(boulders)
                 setLoadingBoulders(false)
             }
         }
@@ -53,12 +56,12 @@ export default function RandomBoulderGenerator() {
         <div>
             <Card>
                 <div className='text-center text-xl font-bold'>
-                    Random Boulder Generator
+                    {title}
                 </div>
             </Card>
             <Card>
                 
-                {loadingGyms ? 'Loading your gym...' : 
+                {loadingGyms ? 'Retrieving gyms from TopLogger...' : 
                 <div className='flex flex-col gap-3'>
                     <div>Selected gym:  <b>{gymList.find((gymObj) => gymObj.id == gym)?.name}</b></div>
                     <Button href='/' text='Change'/>
@@ -66,18 +69,8 @@ export default function RandomBoulderGenerator() {
             </Card>
             {!loadingGyms && gym ? 
             <Card>
-                {loadingBoulders ? 'Loading boulders...' :
-                <div>
-                    <div>
-                        Options
-                    </div>  
-                    <div>
-                        Generate button
-                    </div>
-                    <div>
-                        Boulder
-                    </div>
-                </div>}
+                {loadingBoulders ? 'Retrieving boulders from TopLogger...' :
+                children}
             </Card>
             : ''}
         </div>
