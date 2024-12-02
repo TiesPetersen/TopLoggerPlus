@@ -8,7 +8,7 @@ export default function Info() {
             Welcome!
         </div>
         <div className='text-gray-200'>
-            TopLoggerPlus is an extension of the TopLogger app, offering extra features, useful tools and exciting games!
+          TopLoggerPlus enhances the TopLogger app with extra features, useful tools, and games!
         </div>
     </Card>
   )

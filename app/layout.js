@@ -3,6 +3,7 @@ import "./globals.css";
 import Head from "./head";
 import Navbar from "@/components/Navbar";
 import { LocalProvider } from "@/context/localContext";
+import BottomInfo from "@/components/BottomInfo";
 
 const inter = Inter({ subsets: ['latin']})
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
         <LocalProvider>
           <Navbar/>
           {children}
+          <BottomInfo/>
         </LocalProvider>
       </body>
     </html>
