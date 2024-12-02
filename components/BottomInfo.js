@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function BottomInfo() {
   return (
-    <div className='text-center'>
+    <div className='text-center mt-4'>
         <div className="flex justify-center items-center gap-3 mb-1 text-zinc-400">
             <div className='mb-1'>By Ties Petersen</div>
             <Link href='https://github.com/TiesPetersen'><i className="fa-brands fa-square-github text-2xl p-0 m-0"></i></Link>

@@ -13,10 +13,6 @@ export default function Tools() {
         return null;
     }
 
-    function extendURL(url) {
-        return url + '?gym=' + gym
-    }
-
     return (
         <Card>
             <div className='text-center mb-3 text-lg font-bold'>
@@ -26,14 +22,14 @@ export default function Tools() {
                 <div>
                     <div className='text-left'>General</div>
                     <hr className='mb-2 border-zinc-400'/>
-                    <Button href={extendURL('/random-boulder-generator')} text='Random Boulder Generator' />
+                    <Button href='/random-boulder-generator' text='Random Boulder Generator' />
                 </div>
                 <div>
                     <div className='text-left'>Random Boulder Comp</div>
                     <hr className='mb-2 border-zinc-400'/>
                     <div className='flex flex-col gap-2'>
-                        <Button href={extendURL('/comp-mode')} text='Comp Mode' disabled/>
-                        <Button href={extendURL('/blitz-comp')} text='Blitz Comp' disabled/>
+                        <Button href='/comp-mode' text='Comp Mode' disabled/>
+                        <Button href='/blitz-comp' text='Blitz Comp' disabled/>
                     </div>
                 </div>
             </div>

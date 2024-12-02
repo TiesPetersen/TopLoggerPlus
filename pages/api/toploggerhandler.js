@@ -10,6 +10,10 @@ export default async function handler(req, res) {
 
         if (func == 'allGyms') {
             result = await getAllGyms()
+        } else if (func == 'boulders') {
+            result = {test: 'hi'}
+        } else {
+            throw new Error("Unknown function");
         }
         
         // return result from server-side request response  
