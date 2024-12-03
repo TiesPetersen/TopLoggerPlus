@@ -7,7 +7,7 @@ export default function OptionDropDown({children, title}) {
 
     return (
         <div>
-            <div className='flex justify-between border-2 rounded-lg p-2' onClick={() => setDropped(!dropped)}>
+            <div className='flex justify-between border-2 rounded-lg p-2 hover:bg-zinc-700' onClick={() => setDropped(!dropped)}>
                 <div className=''>
                     {title}
                 </div>
@@ -19,9 +19,9 @@ export default function OptionDropDown({children, title}) {
                     }
                 </div>
             </div>
-            {dropped ? 
-            children
-            : ''}
+            <div className={'' + (dropped ? '' : 'hidden')}>
+                {children}
+            </div>
         </div>
         
     )

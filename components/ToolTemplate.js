@@ -29,15 +29,14 @@ export default function ToolTemplate({children, title}) {
                 {gymLoading ? 'Retrieving gyms from TopLogger...' : 
                 <div className='flex flex-col gap-3'>
                     <div>Selected gym:  <b>{gymList.find((gymObj) => gymObj.id == gym)?.name}</b></div>
-                    <Button href='/' text='Change'/>
+                    <Button href='/' text='Change' outline/>
                 </div>}
             </Card>
             {!gymLoading && gym ? 
-            <Card>
-                {boulderLoading ? 'Retrieving boulders from TopLogger...' :
+            <div>
+                {boulderLoading ? <Card>Retrieving boulders from TopLogger...</Card> :
                 children}
-            </Card>
-            : ''}
+            </div> : ''}
         </div>
     )
 }

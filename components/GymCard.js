@@ -52,7 +52,7 @@ export default function GymCard() {
                                         {gym.name}
                                     </div>
                                     <div>
-                                        <Button text='Select' href='' onClick={() => selectGym(gym.id)}/>
+                                        <Button text='Select' onClick={() => selectGym(gym.id)}/>
                                     </div>
                                 </div>
                         </div>)

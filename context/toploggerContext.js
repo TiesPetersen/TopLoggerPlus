@@ -37,6 +37,8 @@ export function ToploggerProvider({children}) {
     }, [])
 
     useEffect(() => {
+        setBoulderLoading(true)
+
         async function getBoulders() {
             console.log('Getting Boulders')
             const response = await fetch('/api/toploggerhandler', {
@@ -46,6 +48,7 @@ export function ToploggerProvider({children}) {
             
             if (response.ok) {
                 const boulders = await response.json()
+                console.log(boulders)
                 setBoulderList(boulders)
                 setBoulderLoading(false)
             }
