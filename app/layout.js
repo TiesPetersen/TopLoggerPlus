@@ -4,6 +4,7 @@ import Head from "./head";
 import Navbar from "@/components/Navbar";
 import { LocalProvider } from "@/context/localContext";
 import BottomInfo from "@/components/BottomInfo";
+import { ToploggerProvider } from "@/context/toploggerContext";
 
 const inter = Inter({ subsets: ['latin']})
 
@@ -18,9 +19,11 @@ export default function RootLayout({ children }) {
       <Head/>
       <body className={'w-full max-w-[600px] mx-auto text-base min-h-screen text-gray-100 bg-zinc-900 ' + inter.className}>
         <LocalProvider>
-          <Navbar/>
-          {children}
-          <BottomInfo/>
+          <ToploggerProvider>
+            <Navbar/>
+            {children}
+            <BottomInfo/>
+          </ToploggerProvider>
         </LocalProvider>
       </body>
     </html>

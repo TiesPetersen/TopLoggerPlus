@@ -20,8 +20,6 @@ export async function getAllGyms() {
 }
 
 export async function getBoulders(gymId) {
-    console.log(gymId)
-
     const response = await fetch('https://app.toplogger.nu/graphql', {
         method: 'POST',
         headers: {

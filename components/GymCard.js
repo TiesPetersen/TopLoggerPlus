@@ -4,36 +4,18 @@ import React, { useEffect, useState } from 'react'
 import Card from './Card'
 import Button from './Button'
 import { useLocal } from '@/context/localContext'
+import { useToplogger } from '@/context/toploggerContext'
 
 export default function GymCard() {
-    const [loading, setLoading] = useState(true)
     const [text, setText] = useState('')
-    const [gymList, setGymList] = useState([])
     const [filteredGymList, setFilteredGymList] = useState([])
 
     const { gym, setGym} = useLocal()
-
-    // get gyms
-    useEffect(() => {
-        async function getGyms() {
-            const response = await fetch('/api/toploggerhandler', {
-                method: 'POST', 
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({func: 'allGyms'})})
-            
-            if (response.ok) {
-                const allGyms = await response.json()
-                setGymList(allGyms[0].data.gyms)
-                setLoading(false)
-            }
-        }
-
-        getGyms()
-    }, [])
+    const { gymList, gymLoading} = useToplogger()
 
     // filter gyms on input
     useEffect(() => {
-        if (text && !loading) {
+        if (text && !gymLoading) {
             var gymListCopy = gymList
             setFilteredGymList(gymListCopy.filter((gym) => gym.climbTypeDefault == 'boulder' && gym.name.toLowerCase().indexOf(text.toLowerCase()) != -1))
         } else {
@@ -51,7 +33,7 @@ export default function GymCard() {
             <div className='text-center mb-3 text-xl font-bold'>
                 Select Your Gym
             </div>
-            {!loading ? 
+            {!gymLoading ? 
             <div>
                 {gym ? 
                 <div className=''>
