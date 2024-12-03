@@ -15,6 +15,12 @@ export function ToploggerProvider({children}) {
     const [boulderList, setBoulderList] = useState(null)
     const [boulderLoading, setBoulderLoading] = useState(true)
 
+    const [colorCount, setColorCount] = useState({})
+    const [groupCount, setGroupCount] = useState({})
+    const [wallCount, setWallCount] = useState({})
+    const [ grades, setGrades ] = useState([])
+    const [ gradeCount, setGradeCount] = useState([])
+
     const { gym, setGym } = useLocal()
 
     // get gyms (and boulders)
@@ -51,7 +57,59 @@ export function ToploggerProvider({children}) {
                 console.log(boulders)
                 setBoulderList(boulders)
                 setBoulderLoading(false)
+
+                analyseBoulders(boulders)
             }
+        }
+
+        function analyseBoulders(boulders) {
+            var colorCountTemp = {}
+            var groupCountTemp = {}
+            var wallCountTemp = {}
+            var gradeCountTemp = {}
+        
+            boulders[0].data.climbs.data.forEach(climb => {
+                if (climb.holdColorId in colorCountTemp) {
+                    colorCountTemp[climb.holdColorId] += 1
+                } else {
+                    colorCountTemp[climb.holdColorId] = 1
+                }
+        
+                if (climb.wallId in wallCountTemp) {
+                    wallCountTemp[climb.wallId] += 1
+                } else {
+                    wallCountTemp[climb.wallId] = 1
+                }
+        
+                climb.climbGroupClimbs.forEach(group => {
+                    if (group.climbGroupId in groupCountTemp) {
+                        groupCountTemp[group.climbGroupId] += 1
+                    } else {
+                        groupCountTemp[group.climbGroupId] = 1
+                    }
+                })
+
+                if (climb.grade.toString() in gradeCountTemp){
+                    gradeCountTemp[climb.grade.toString()] += 1
+                } else {
+                    gradeCountTemp[climb.grade.toString()] = 1
+                }
+        
+            });
+
+
+        
+            console.log('colorCount', colorCountTemp)
+            console.log('groupCount', groupCountTemp)
+            console.log('wallCount', wallCountTemp)
+            console.log('gradeCount', gradeCountTemp)
+            console.log('grades', Object.keys(gradeCountTemp))
+
+            setColorCount(colorCountTemp)
+            setGroupCount(groupCountTemp)
+            setWallCount(wallCountTemp)
+            setGradeCount(gradeCountTemp)
+            setGrades(Object.keys(gradeCountTemp))
         }
 
         console.log("GYM", gym)
@@ -71,7 +129,12 @@ export function ToploggerProvider({children}) {
         setGymList,
         setBoulderList,
         setGymLoading,
-        setBoulderLoading
+        setBoulderLoading,
+        colorCount,
+        wallCount,
+        groupCount,
+        grades,
+        gradeCount
     }
 
     return (
