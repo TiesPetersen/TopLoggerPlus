@@ -56,19 +56,26 @@ export function ToploggerProvider({children}) {
                 const boulders = await response.json()
                 console.log(boulders)
                 setBoulderList(boulders)
-                setBoulderLoading(false)
-
-                analyseBoulders(boulders)
             }
         }
 
-        function analyseBoulders(boulders) {
+        console.log("GYM", gym)
+
+        if (gym) {
+            getBoulders()
+        } else {
+            setBoulderLoading(false)
+        }
+    }, [gym])
+
+    useEffect(() => {
+        function analyseBoulders() {
             var colorCountTemp = {}
             var groupCountTemp = {}
             var wallCountTemp = {}
             var gradeCountTemp = {}
         
-            boulders[0].data.climbs.data.forEach(climb => {
+            boulderList[0].data.climbs.data.forEach(climb => {
                 if (climb.holdColorId in colorCountTemp) {
                     colorCountTemp[climb.holdColorId] += 1
                 } else {
@@ -110,16 +117,14 @@ export function ToploggerProvider({children}) {
             setWallCount(wallCountTemp)
             setGradeCount(gradeCountTemp)
             setGrades(Object.keys(gradeCountTemp))
-        }
-
-        console.log("GYM", gym)
-
-        if (gym) {
-            getBoulders()
-        } else {
             setBoulderLoading(false)
         }
-    }, [gym])
+
+        if (boulderList) {
+            console.log("Analysing boulders")
+            analyseBoulders()
+        }
+    }, [boulderList])
 
     const value = {
         gymList,
