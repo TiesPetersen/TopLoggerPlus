@@ -12,6 +12,10 @@ export default function RandomBoulderGenerator() {
     const [ groupOptions, setGroupOptions] = useState([])
     const [ wallOptions, setWallOptions ] = useState([])
     const [ gradeOptions, setGradeOptions] = useState([])
+    const [ colorEnabled, setColorEnabled ] = useState(false)
+    const [ groupEnabled, setGroupEnabled ] = useState(false)
+    const [ wallEnabled, setWallEnabled ] = useState(false)
+    const [ gradeEnabled, setGradeEnabled ] = useState(false)
     const { boulderList, colorCount, wallCount, groupCount, grades, gradeCount } = useToplogger()
 
     const colors = boulderList[1].data.gym.holdColors
@@ -19,7 +23,22 @@ export default function RandomBoulderGenerator() {
     const walls =  boulderList[1].data.gym.walls
 
     function changeColorOptions(event) {
+
         var colorOptionsTemp = colorOptions
+        
+        if (event.target.id == 'selectall') {
+            colors.forEach((color) => {
+                if (colorOptionsTemp.indexOf(color.id) == -1 && colorCount[color.id] > 0){
+                    colorOptionsTemp.push(color.id)
+                }
+            })
+            setColorOptions([...colorOptionsTemp])
+            return
+        } else if (event.target.id == 'deselectall') {
+            colorOptionsTemp = []
+            setColorOptions([...colorOptionsTemp])
+            return
+        }
 
         const index = colorOptionsTemp.indexOf(event.target.name)
         if (index != -1) {
@@ -34,6 +53,20 @@ export default function RandomBoulderGenerator() {
     function changeGroupOptions(event) {
         var groupOptionsTemp = groupOptions
 
+        if (event.target.id == 'selectall') {
+            groups.forEach((group) => {
+                if (groupOptionsTemp.indexOf(group.id) == -1 && groupCount[group.id] > 0){
+                    groupOptionsTemp.push(group.id)
+                }
+            })
+            setGroupOptions([...groupOptionsTemp])
+            return
+        } else if (event.target.id == 'deselectall') {
+            groupOptionsTemp = []
+            setGroupOptions([...groupOptionsTemp])
+            return
+        }
+
         const index = groupOptionsTemp.indexOf(event.target.name)
         if (index != -1) {
             groupOptionsTemp.splice(index, 1)
@@ -47,6 +80,20 @@ export default function RandomBoulderGenerator() {
     function changeWallOptions(event) {
         var wallOptionsTemp = wallOptions
 
+        if (event.target.id == 'selectall') {
+            walls.forEach((wall) => {
+                if (wallOptionsTemp.indexOf(wall.id) == -1 && wallCount[wall.id] > 0){
+                    wallOptionsTemp.push(wall.id)
+                }
+            })
+            setWallOptions([...wallOptionsTemp])
+            return
+        } else if (event.target.id == 'deselectall') {
+            wallOptionsTemp = []
+            setWallOptions([...wallOptionsTemp])
+            return
+        }
+
         const index = wallOptionsTemp.indexOf(event.target.name)
         if (index != -1) {
             wallOptionsTemp.splice(index, 1)
@@ -59,6 +106,20 @@ export default function RandomBoulderGenerator() {
 
     function changeGradeOptions(event) {
         var gradeOptionsTemp = gradeOptions
+
+        if (event.target.id == 'selectall') {
+            grades.forEach((grade) => {
+                if (gradeOptionsTemp.indexOf(grade) == -1 && gradeCount[grade.toString()] > 0){
+                    gradeOptionsTemp.push(grade)
+                }
+            })
+            setGradeOptions([...gradeOptionsTemp])
+            return
+        } else if (event.target.id == 'deselectall') {
+            gradeOptionsTemp = []
+            setGradeOptions([...gradeOptionsTemp])
+            return
+        }
 
         const index = gradeOptionsTemp.indexOf(event.target.name)
         if (index != -1) {
@@ -94,7 +155,7 @@ export default function RandomBoulderGenerator() {
                 }
             })
 
-            if (hasColor && hasGrade && hasGroup && hasWall) {
+            if ((!colorEnabled || hasColor) && (!gradeEnabled || hasGrade) && (!groupEnabled || hasGroup) && (!wallEnabled ||hasWall)) {
                 filteredBoulders.push(boulder)
             }
         })
@@ -107,11 +168,16 @@ export default function RandomBoulderGenerator() {
     return (
         <div>
             <Card>
-                <div className='text-center mb-3 text-xl font-bold'>
-                    Options
+                <div className='mb-3'>
+                    <div className='text-center text-xl font-bold'>Options</div>
+                    <div className='text-center'>Click on the menus below to enable the filter for that category.</div>
                 </div>
                 <div className='mb-3 flex flex-col gap-3'>
-                    <OptionDropDown title='Colors'>
+                    <OptionDropDown title='Colors' dropped={colorEnabled} setDropped={setColorEnabled}>
+                        <div className='flex gap-3 justify-between mt-3'>
+                            <Button onClick={changeColorOptions} name='selectall' outline text={'Select All'}/>
+                            <Button onClick={changeColorOptions} name='deselectall' outline text={'Deselect All'}/>
+                        </div>
                         <div className='flex flex-col gap-2 mt-3 ms-1'>
                             {colors.map((color) => {
                                 if (color.id in colorCount){
@@ -121,7 +187,11 @@ export default function RandomBoulderGenerator() {
                             })}
                         </div>
                     </OptionDropDown>
-                    <OptionDropDown title='Groups'> 
+                    <OptionDropDown title='Groups' dropped={groupEnabled} setDropped={setGroupEnabled}> 
+                        <div className='flex gap-3 justify-between mt-3'>
+                            <Button onClick={changeGroupOptions} name='selectall' outline text={'Select All'}/>
+                            <Button onClick={changeGroupOptions} name='deselectall' outline text={'Deselect All'}/>
+                        </div>
                         <div className='flex flex-col gap-2 mt-3 ms-1'>
                             {groups.map((group) => {
                                 if (group.id in groupCount) {
@@ -131,7 +201,11 @@ export default function RandomBoulderGenerator() {
                             })}
                         </div>
                     </OptionDropDown>
-                    <OptionDropDown title='Walls'>
+                    <OptionDropDown title='Walls' dropped={wallEnabled} setDropped={setWallEnabled}>
+                        <div className='flex gap-3 justify-between mt-3'>
+                            <Button onClick={changeWallOptions} name='selectall' outline text={'Select All'}/>
+                            <Button onClick={changeWallOptions} name='deselectall' outline text={'Deselect All'}/>
+                        </div>
                         <div className='flex flex-col gap-2 mt-3 ms-1'>
                             {walls.map((wall) => {
                                 if (wall.id in wallCount) {
@@ -141,7 +215,11 @@ export default function RandomBoulderGenerator() {
                             })}
                         </div>
                     </OptionDropDown>
-                    <OptionDropDown title='Grades'>
+                    <OptionDropDown title='Grades' dropped={gradeEnabled} setDropped={setGradeEnabled}>
+                        <div className='flex gap-3 justify-between mt-3'>   
+                            <Button onClick={changeGradeOptions} name='selectall' outline text={'Select All'}/>
+                            <Button onClick={changeGradeOptions} name='deselectall' outline text={'Deselect All'}/>
+                        </div>
                         <div className='flex flex-col gap-2 mt-3 ms-1'>
                             {grades.map((grade) => {
                                 if (grade in gradeCount) {

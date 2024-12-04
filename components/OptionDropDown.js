@@ -2,13 +2,15 @@
 
 import React, { useState } from 'react'
 
-export default function OptionDropDown({children, title}) {
-    const [dropped, setDropped] = useState(false)
+export default function OptionDropDown({children, title, dropped, setDropped}) {
 
     return (
         <div>
-            <div className='flex justify-between border-2 rounded-lg p-2 hover:bg-zinc-700' onClick={() => setDropped(!dropped)}>
-                <div className=''>
+            <div className={(dropped ? 'border-2 bg-zinc-100 text-zinc-900 ' : ' border-2 hover:bg-zinc-700 ') + 'flex justify-between rounded-lg p-2'} onClick={() => setDropped(!dropped)}>
+                <div className='flex items-center'>
+                    <div className='me-3' style={{'fontSize': '1.75rem'}}>
+                        {dropped ? <i class="fa-solid fa-toggle-on"></i> : <i class="fa-solid fa-toggle-off"></i>}
+                    </div>
                     {title}
                 </div>
                 <div>
