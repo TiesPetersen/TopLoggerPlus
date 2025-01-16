@@ -10,64 +10,88 @@ export function useToplogger() {
 }
 
 export function ToploggerProvider({children}) {
-    const [gymList, setGymList] = useState(null)
-    const [gymLoading, setGymLoading] = useState(true)
-    const [boulderList, setBoulderList] = useState(null)
-    const [boulderLoading, setBoulderLoading] = useState(true)
+    const [ gymList, setGymList ] = useState(null)
+    const [ gymListStatus, setGymListStatus ] = useState('loading')
 
-    const [colorCount, setColorCount] = useState({})
-    const [groupCount, setGroupCount] = useState({})
-    const [wallCount, setWallCount] = useState({})
+    const [ boulderList, setBoulderList ] = useState(null)
+    const [ boulderListStatus, setBoulderListStatus ] = useState('waiting')
+
+    // ANALYSIS DATA
+    const [ colorCount, setColorCount ] = useState({})
+    const [ groupCount, setGroupCount ] = useState({})
+    const [ wallCount, setWallCount ] = useState({})
     const [ grades, setGrades ] = useState([])
     const [ gradeCount, setGradeCount] = useState([])
 
-    const { gym, setGym } = useLocal()
+    const { gymId, gymIdStatus } = useLocal()
 
-    // get gyms (and boulders)
+    // GET ALL GYMS ON LOAD
     useEffect(() => {
         async function getGyms() {
-            console.log('Getting Gyms')
+            console.log('Fetching Gyms')
+
             const response = await fetch('/api/toploggerhandler', {
                 method: 'POST', 
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({func: 'allGyms'})})
-            
+                body: JSON.stringify({func: 'allGyms'})
+            })
+
+            console.log('Got a response')
             if (response.ok) {
+                console.log("Response OK")
+
                 const allGyms = await response.json()
                 setGymList(allGyms[0].data.gyms)
-                setGymLoading(false)
+                setGymListStatus('success')
+
+                console.log("GymList Updated")
+            } else {
+                console.log("Response Failed")
+                setGymListStatus('failed')
             }
         }
 
         getGyms()
     }, [])
 
-    useEffect(() => {
-        setBoulderLoading(true)
-
+    // GET BOULDERS ON GYM CHANGE
+    useEffect(() => {        
         async function getBoulders() {
-            console.log('Getting Boulders')
+            console.log('Fetching Boulders')
             const response = await fetch('/api/toploggerhandler', {
                 method: 'POST', 
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({func: 'boulders', gymId: gym})})
-            
+                body: JSON.stringify({func: 'boulders', gymId: gymId})
+            })
+
+            console.log('Got a response')
             if (response.ok) {
+                console.log("Response OK")
+
                 const boulders = await response.json()
                 console.log(boulders)
                 setBoulderList(boulders)
+
+                console.log("BoulderList Updated")
+            } else {
+                console.log("Response Failed")
+                setBoulderListStatus('failed')
             }
         }
 
-        console.log("GYM", gym)
+        console.log('GymId Changed')
+        console.log("GymId", gymId)
 
-        if (gym) {
+        if (gymId != null) {
+            setBoulderListStatus('loading')
             getBoulders()
         } else {
-            setBoulderLoading(false)
+            setBoulderListStatus('waiting')
+            setBoulderList(null)
         }
-    }, [gym])
+    }, [gymId])
 
+    // ANALYSE BOULDERS ON BOULDER CHANGE
     useEffect(() => {
         function analyseBoulders() {
             var colorCountTemp = {}
@@ -104,8 +128,6 @@ export function ToploggerProvider({children}) {
         
             });
 
-
-        
             console.log('colorCount', colorCountTemp)
             console.log('groupCount', groupCountTemp)
             console.log('wallCount', wallCountTemp)
@@ -117,24 +139,26 @@ export function ToploggerProvider({children}) {
             setWallCount(wallCountTemp)
             setGradeCount(gradeCountTemp)
             setGrades(Object.keys(gradeCountTemp))
-            setBoulderLoading(false)
+
+            setBoulderListStatus('success')
         }
 
-        if (boulderList) {
+        if (boulderList != null) {
             console.log("Analysing boulders")
             analyseBoulders()
+            console.log("Analysis Complete")
         }
     }, [boulderList])
 
     const value = {
         gymList,
         boulderList,
-        gymLoading,
-        boulderLoading,
+        gymListStatus,
+        boulderListStatus,
         setGymList,
         setBoulderList,
-        setGymLoading,
-        setBoulderLoading,
+        setGymListStatus,
+        setBoulderListStatus,
         colorCount,
         wallCount,
         groupCount,

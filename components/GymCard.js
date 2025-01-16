@@ -10,12 +10,12 @@ export default function GymCard() {
     const [text, setText] = useState('')
     const [filteredGymList, setFilteredGymList] = useState([])
 
-    const { gym, setGym} = useLocal()
-    const { gymList, gymLoading} = useToplogger()
+    const { gymId, setGymId, gymIdStatus} = useLocal()
+    const { gymList, gymListStatus} = useToplogger()
 
-    // filter gyms on input
+    // FILTER GYMS ON INPUT FIELD CHANGE
     useEffect(() => {
-        if (text && !gymLoading) {
+        if (text !== '' && gymListStatus == 'success') {
             var gymListCopy = gymList
             setFilteredGymList(gymListCopy.filter((gym) => gym.climbTypeDefault == 'boulder' && gym.name.toLowerCase().indexOf(text.toLowerCase()) != -1))
         } else {
@@ -24,7 +24,7 @@ export default function GymCard() {
     }, [text])
 
     function selectGym(id) {
-        setGym(id)
+        setGymId(id)
         setText('')
     }
 
@@ -33,15 +33,16 @@ export default function GymCard() {
             <div className='text-center mb-3 text-xl font-bold'>
                 Select Your Gym
             </div>
-            {!gymLoading ? 
+            { (gymListStatus === 'loading' || gymIdStatus === 'loading') && 'Retrieving gyms from TopLogger...'}
+            { gymListStatus === 'failed' && 'Failed to retrieve gyms from TopLogger. Please try again later.'}
+            { gymListStatus === 'success' && gymIdStatus === 'success' &&
             <div>
-                {gym ? 
                 <div className=''>
-                    <div className='mb-3'>Selected gym: <b>{gymList.find((gymObj) => gymObj.id == gym)?.name}</b></div>
-                </div> : ''}
+                    <div className='mb-3'>Selected gym: <b>{gymList.find((gymObj) => gymObj.id == gymId)?.name}</b></div>
+                </div>
                 <div>
                     <div>
-                        <input type='text' className='w-full bg-zinc-700 rounded p-1 placeholder:text-zinc-300' placeholder='Search for your gym...' value={text} onChange={(e)=>setText(e.target.value)}/>
+                        <input type='text' className='w-full bg-zinc-700 rounded p-2 placeholder:text-zinc-300' placeholder='Search for your gym...' value={text} onChange={(e)=>setText(e.target.value)}/>
                     </div>
                     {filteredGymList.length > 0 ? 
                     <div className='flex flex-col gap-3 mt-4'>
@@ -59,11 +60,7 @@ export default function GymCard() {
                         )}
                     </div> : ''}   
                 </div> 
-            </div> :
-            <div className='text-center text-zinc-300'>
-                Retrieving gyms from TopLogger...
-            </div>
-        }
+            </div>}
         </Card>
   )
 }

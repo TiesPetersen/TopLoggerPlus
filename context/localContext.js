@@ -9,28 +9,39 @@ export function useLocal() {
 }
 
 export function LocalProvider({children}) {
-    const [gym, setGym] = useState(null)
+    const [ gymId, setGymId ] = useState(null)
+    const [ gymIdStatus, setGymIdStatus ] = useState('loading')
 
+    // GET STORED GYM ID ON LOAD
     useEffect(() => {
-        // get gym from local storage if stored
-        const tempGym = localStorage.getItem('gym')
-        if (tempGym != null) {
-            setGym(tempGym)
+        console.log("Getting Stored Gym ID from Local Storage")
+
+        const tempGymId = localStorage.getItem('gymId')
+        if (tempGymId != null) {
+            setGymId(tempGymId)
         }
+
+        setGymIdStatus('success')
+        
+        console.log("Stored Gym ID: ", tempGymId)
     }, [])
 
+    // STORE GYM ID IN LOCAL STORAGE ON CHANGE   
     useEffect(() => {
-        // store gym in local storage
-        if (gym != null) {
-            localStorage.setItem('gym', gym)
-        } else {
-            localStorage.removeItem('gym')
+        console.log('GymID changed to', gymId)
+
+        if (gymId != null) {
+            console.log("Changing Gym ID in Local Storage")
+            console.log('Setting Gym ID in Local Storage: ', gymId)
+            localStorage.setItem('gymId', gymId)
         }
-    }, [gym])
+    }, [gymId])
 
     const value = {
-        gym,
-        setGym
+        gymId,
+        setGymId,
+        gymIdStatus,
+        setGymIdStatus
     }
 
     return (

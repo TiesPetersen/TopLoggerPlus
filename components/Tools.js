@@ -5,11 +5,13 @@ import React from 'react'
 import Button from './Button'
 import Card from './Card'
 import { useLocal } from '@/context/localContext'
+import { useToplogger } from '@/context/toploggerContext'
 
 export default function Tools() {
-    const {gym} = useLocal()
+    const { gymId, gymIdStatus } = useLocal()
+    const { gymList, gymListStatus } = useToplogger()
 
-    if (!gym) {
+    if (gymIdStatus !== 'success' || gymId === null || gymListStatus !== 'success') {
         return null;
     }
 

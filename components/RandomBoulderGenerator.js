@@ -159,7 +159,6 @@ export default function RandomBoulderGenerator() {
                 filteredBoulders.push(boulder)
             }
         })
-        console.log(filteredBoulders)
 
         const randBoulder = filteredBoulders[Math.floor(Math.random() * filteredBoulders.length)]
         setRandomBoulder(randBoulder)
