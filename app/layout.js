@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ['latin']})
 
 export const metadata = {
   title: "TopLoggerPlus",
+  description: "More features, useful tools, and games for TopLogger.",
 };
 
 export default function RootLayout({ children }) {
