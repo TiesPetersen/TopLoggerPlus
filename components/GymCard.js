@@ -37,9 +37,10 @@ export default function GymCard() {
             { gymListStatus === 'failed' && 'Failed to retrieve gyms from TopLogger. Please try again later.'}
             { gymListStatus === 'success' && gymIdStatus === 'success' &&
             <div>
+                { gymId != null &&
                 <div className=''>
                     <div className='mb-3'>Selected gym: <b>{gymList.find((gymObj) => gymObj.id == gymId)?.name}</b></div>
-                </div>
+                </div> }
                 <div>
                     <div>
                         <input type='text' className='w-full bg-zinc-700 rounded p-2 placeholder:text-zinc-300' placeholder='Search for your gym...' value={text} onChange={(e)=>setText(e.target.value)}/>
