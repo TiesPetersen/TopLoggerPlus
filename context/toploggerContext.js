@@ -42,10 +42,15 @@ export function ToploggerProvider({children}) {
                     console.log("Response OK")
 
                     const allGyms = await response.json()
-                    setGymList(allGyms[0].data.gyms)
-                    setGymListStatus('success')
+                    if (allGyms[0]?.data?.gyms?.length > 0) {
+                        setGymList(allGyms[0].data.gyms)
+                        setGymListStatus('success')
+                        console.log("GymList Updated")
+                    } else {
+                        console.log("No Gyms Found")
+                        setGymListStatus('failed')
+                    }
 
-                    console.log("GymList Updated")
                 } else {
                     console.log("Response Failed")
                     setGymListStatus('failed')
@@ -77,9 +82,13 @@ export function ToploggerProvider({children}) {
 
                     const boulders = await response.json()
                     console.log(boulders)
-                    setBoulderList(boulders)
-
-                    console.log("BoulderList Updated")
+                    if (boulders[0]?.data?.climbs?.data?.length > 0) {
+                        setBoulderList(boulders)
+                        console.log("BoulderList Updated")
+                    } else {
+                        console.log("No Boulders Found")
+                        setBoulderListStatus('failed')
+                    }
                 } else {
                     console.log("Response Failed")
                     setBoulderListStatus('failed')
