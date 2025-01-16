@@ -30,23 +30,29 @@ export function ToploggerProvider({children}) {
         async function getGyms() {
             console.log('Fetching Gyms')
 
-            const response = await fetch('/api/toploggerhandler', {
-                method: 'POST', 
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({func: 'allGyms'})
-            })
+            try {
+                const response = await fetch('/api/toploggerhandler', {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({func: 'allGyms'})
+                })
 
-            console.log('Got a response')
-            if (response.ok) {
-                console.log("Response OK")
+                console.log('Got a response')
+                if (response.ok) {
+                    console.log("Response OK")
 
-                const allGyms = await response.json()
-                setGymList(allGyms[0].data.gyms)
-                setGymListStatus('success')
+                    const allGyms = await response.json()
+                    setGymList(allGyms[0].data.gyms)
+                    setGymListStatus('success')
 
-                console.log("GymList Updated")
-            } else {
-                console.log("Response Failed")
+                    console.log("GymList Updated")
+                } else {
+                    console.log("Response Failed")
+                    setGymListStatus('failed')
+                }
+            } catch (error) {
+                console.log("Error during fetch")
+                console.log(error)
                 setGymListStatus('failed')
             }
         }
@@ -58,23 +64,29 @@ export function ToploggerProvider({children}) {
     useEffect(() => {        
         async function getBoulders() {
             console.log('Fetching Boulders')
-            const response = await fetch('/api/toploggerhandler', {
-                method: 'POST', 
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({func: 'boulders', gymId: gymId})
-            })
+            try {
+                const response = await fetch('/api/toploggerhandler', {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({func: 'boulders', gymId: gymId})
+                })
 
-            console.log('Got a response')
-            if (response.ok) {
-                console.log("Response OK")
+                console.log('Got a response')
+                if (response.ok) {
+                    console.log("Response OK")
 
-                const boulders = await response.json()
-                console.log(boulders)
-                setBoulderList(boulders)
+                    const boulders = await response.json()
+                    console.log(boulders)
+                    setBoulderList(boulders)
 
-                console.log("BoulderList Updated")
-            } else {
-                console.log("Response Failed")
+                    console.log("BoulderList Updated")
+                } else {
+                    console.log("Response Failed")
+                    setBoulderListStatus('failed')
+                }
+            } catch (error) {
+                console.log("Error during fetch")
+                console.log(error)
                 setBoulderListStatus('failed')
             }
         }
